@@ -1,6 +1,6 @@
 # Product Management Dashboard
 
-A modern full-stack product management system built with React, Node.js, and MySQL. Features complete CRUD operations with validation, Rwandan Francs (RWF) currency support, and flexible stock unit management.
+A modern full-stack product management system built  currency support, and flexible stock unit management.
 
 ## ✨ Features
 
@@ -61,7 +61,7 @@ PORT=4000
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
-DB_PASSWORD=your_password
+DB_PASSWORD=""
 DB_NAME=product_dashboard
 ```
 
@@ -140,4 +140,4 @@ MIT
 
 ## 👨‍💻 Author
 
-Albertin - Product Management Dashboard ALX Project
+Bertin - Product Management Dashboard ALX Project

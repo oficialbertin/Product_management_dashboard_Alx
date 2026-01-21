@@ -6,8 +6,20 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    open: true, // Automatically open in default browser (Chrome, Edge, etc.)
-    strictPort: false, // Allow using next available port if 5173 is taken
+    open: true,
+    strictPort: false,
+    host: '0.0.0.0', // Bind to all interfaces so external browsers can access
+    hmr: {
+      protocol: 'ws',
+      host: 'localhost',
+      port: 24678,
+    },
+    fs: {
+      strict: false,
+    },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
   },
 });
 
