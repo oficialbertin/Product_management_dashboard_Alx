@@ -76,13 +76,51 @@ VITE_API_URL=http://localhost:4000
 # Install all dependencies
 npm install
 
-# Start both backend and frontend
-npm run dev
+# Start both backend and frontend (single command)
+npm start
 ```
 
-The app will automatically open at:
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:4000
+When it starts, check the terminal output and open the URL shown under **[WEB]**:
+- **Frontend**: `http://localhost:5173/`
+- **Backend API**: `http://localhost:4000`
+
+## ▶️ Run Options
+
+### Option 1: Development mode (recommended)
+
+Runs:
+- Backend with `nodemon` (auto-restart on changes)
+- Frontend with Vite (hot reload)
+
+```bash
+npm start
+```
+
+If `5173` is already in use, stop the old process (or use Option 2).
+
+### Option 2: Stable mode (no Vite HMR) — works even when HMR/websocket is blocked
+
+Builds the frontend and serves it with a simple Express static server.
+
+```bash
+npm run dev:build
+```
+
+Open:
+- Frontend: `http://localhost:3000/`
+- Backend: `http://localhost:4000/`
+
+### Option 3: Run in two terminals (manual)
+
+Terminal 1:
+```bash
+npm run dev --prefix backend
+```
+
+Terminal 2:
+```bash
+npm run dev --prefix frontend
+```
 
 ## 📁 Project Structure
 
@@ -131,8 +169,43 @@ Product_management_alx/
 |-------|----------|
 | Database connection error | Check MySQL credentials in `backend/.env` |
 | Port already in use | Change `PORT` in `backend/.env` |
-| Blank page / MIME error | Ensure you're accessing via dev server, not opening HTML directly |
+| Blank page / MIME error | Ensure you're accessing via Vite dev server URL, not XAMPP Apache URL |
 | API not found | Verify `VITE_API_URL` in `frontend/.env` |
+
+### Blank page / MIME type error (most common)
+
+If you see errors like:
+- `Failed to load module script ... MIME type of ""`
+
+It usually means you are **not** opening the Vite dev server.
+
+Use:
+- ✅ `http://localhost:5173/` (or whatever port Vite prints)
+
+Avoid:
+- ❌ `http://localhost/Product_management_alx/...` (this is XAMPP Apache)
+- ❌ `file:///C:/.../frontend/index.html` (opening file directly)
+
+### Ports / old Node processes
+
+If ports keep being “already in use”, stop old Node processes and start again:
+
+```powershell
+Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force
+```
+
+Then:
+```powershell
+npm start
+```
+
+### Quick health check
+
+Open this in your browser:
+- `http://localhost:4000/health`
+
+Expected response:
+- `{"status":"ok"}`
 
 ## 📄 License
 
