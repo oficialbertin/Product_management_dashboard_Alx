@@ -7,7 +7,7 @@
     "dev": "vite --host 0.0.0.0 --open",
     "build": "tsc && vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "serve": "node serve.js",
+    "serve": "node serve.cjs",
     "start": "npm run build && npm run serve"
   },
   "devDependencies": {
