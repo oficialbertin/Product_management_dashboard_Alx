@@ -71,6 +71,7 @@ npm run build
 
 # Serve (in same terminal or new one)
 npm run serve
+# This runs: node serve.cjs
 ```
 
 Then start backend separately:
