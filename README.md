@@ -31,7 +31,7 @@ A modern full-stack product management system built  currency support, and flexi
 
 Ensure you have a MongoDB database available (local MongoDB or MongoDB Atlas).
 
-The backend will connect using `MONGO_URI`.
+The backend will connect using `MONGODB_URI` (recommended for deployment) or `MONGO_URI`.
 
 ### 2. Environment Setup
 

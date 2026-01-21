@@ -9,9 +9,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Connect to MongoDB
-connectDB();
-
 app.use(cors());
 app.use(express.json());
 
@@ -36,7 +33,9 @@ app.use((err, _req, res, _next) => {
   res.status(status).json({ error: err.message || 'Server error' });
 });
 
-app.listen(PORT, () => {
-  console.log(`API listening on port ${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`API listening on port ${PORT}`);
+  });
 });
 
