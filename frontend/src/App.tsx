@@ -29,7 +29,7 @@ const currency = (value: number) =>
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -136,7 +136,7 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     const confirmed = window.confirm('Delete this product?');
     if (!confirmed) return;
 

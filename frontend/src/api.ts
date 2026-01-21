@@ -30,12 +30,12 @@ export const createProduct = (payload: ProductPayload) =>
     body: JSON.stringify(payload),
   });
 
-export const updateProduct = (id: number, payload: Partial<ProductPayload>) =>
+export const updateProduct = (id: string, payload: Partial<ProductPayload>) =>
   request<Product>(`/products/${id}`, {
     method: 'PUT',
     body: JSON.stringify(payload),
   });
 
-export const deleteProduct = (id: number) =>
+export const deleteProduct = (id: string) =>
   request<{ message: string }>(`/products/${id}`, { method: 'DELETE' });
 

@@ -1,5 +1,5 @@
 const express = require('express');
-const pool = require('../db');
+const Product = require('../models/Product');
 const {
   createProductSchema,
   updateProductSchema,
@@ -17,22 +17,10 @@ const validate = (schema, payload) => {
   return value;
 };
 
-const parseId = (id) => {
-  const numericId = Number(id);
-  if (!Number.isInteger(numericId) || numericId <= 0) {
-    const err = new Error('Product id must be a positive integer');
-    err.status = 400;
-    throw err;
-  }
-  return numericId;
-};
-
 router.get('/', async (_req, res, next) => {
   try {
-    const [rows] = await pool.query(
-      'SELECT * FROM products ORDER BY created_at DESC'
-    );
-    res.json(rows);
+    const products = await Product.find().sort({ createdAt: -1 });
+    res.json(products);
   } catch (err) {
     next(err);
   }
@@ -40,15 +28,15 @@ router.get('/', async (_req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const id = parseId(req.params.id);
-    const [rows] = await pool.execute('SELECT * FROM products WHERE id = ?', [
-      id,
-    ]);
-    if (!rows.length) {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
-    res.json(rows[0]);
+    res.json(product);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(400).json({ error: 'Invalid product ID' });
+    }
     next(err);
   }
 });
@@ -56,21 +44,16 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const payload = validate(createProductSchema, req.body);
-    const [result] = await pool.execute(
-      'INSERT INTO products (name, description, price, stock, unit, status) VALUES (?, ?, ?, ?, ?, ?)',
-      [
-        payload.name,
-        payload.description ?? '',
-        payload.price,
-        payload.stock ?? 0,
-        payload.unit ?? 'pcs',
-        payload.status ?? 'active',
-      ]
-    );
-    const [rows] = await pool.execute('SELECT * FROM products WHERE id = ?', [
-      result.insertId,
-    ]);
-    res.status(201).json(rows[0]);
+    const product = new Product({
+      name: payload.name,
+      description: payload.description ?? '',
+      price: payload.price,
+      stock: payload.stock ?? 0,
+      unit: payload.unit ?? 'pcs',
+      status: payload.status ?? 'active',
+    });
+    const savedProduct = await product.save();
+    res.status(201).json(savedProduct);
   } catch (err) {
     next(err);
   }
@@ -78,7 +61,6 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
-    const id = parseId(req.params.id);
     const payload = validate(updateProductSchema, req.body);
 
     const fields = Object.keys(payload);
@@ -86,39 +68,36 @@ router.put('/:id', async (req, res, next) => {
       return res.status(400).json({ error: 'No data to update' });
     }
 
-    const setClause = fields.map((field) => `${field} = ?`).join(', ');
-    const values = [...fields.map((field) => payload[field]), id];
-
-    const [result] = await pool.execute(
-      `UPDATE products SET ${setClause}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
-      values
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      { ...payload, updatedAt: new Date() },
+      { new: true, runValidators: true }
     );
 
-    if (!result.affectedRows) {
+    if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    const [rows] = await pool.execute('SELECT * FROM products WHERE id = ?', [
-      id,
-    ]);
-    res.json(rows[0]);
+    res.json(product);
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(400).json({ error: 'Invalid product ID' });
+    }
     next(err);
   }
 });
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    const id = parseId(req.params.id);
-    const [result] = await pool.execute(
-      'DELETE FROM products WHERE id = ?',
-      [id]
-    );
-    if (!result.affectedRows) {
+    const product = await Product.findByIdAndDelete(req.params.id);
+    if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
     res.json({ message: 'Product deleted' });
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(400).json({ error: 'Invalid product ID' });
+    }
     next(err);
   }
 });

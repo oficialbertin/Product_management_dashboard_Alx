@@ -16,7 +16,7 @@ A modern full-stack product management system built  currency support, and flexi
 
 - **Frontend**: React + TypeScript + Vite
 - **Backend**: Node.js + Express
-- **Database**: MySQL
+- **Database**: MongoDB (Mongoose)
 - **Validation**: Joi (backend), TypeScript (frontend)
 
 ## 📋 Prerequisites
