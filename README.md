@@ -1,36 +1,35 @@
 # Product Management Dashboard
 
-A full-stack product management dashboard built with React, Node.js, and MySQL. Features CRUD operations, server-side validation, and currency support for Rwandan Francs (RWF).
+A modern full-stack product management system built with React, Node.js, and MySQL. Features complete CRUD operations with validation, Rwandan Francs (RWF) currency support, and flexible stock unit management.
 
-## Features
+## ✨ Features
 
-- ✅ Complete CRUD operations (Create, Read, Update, Delete)
-- ✅ Server-side validation using Joi
-- ✅ Client-side validation
-- ✅ Currency in Rwandan Francs (RWF)
-- ✅ Stock units (pcs, kgs, liters, grams, boxes, bags, bottles)
-- ✅ Product status management (active/archived)
-- ✅ Real-time inventory statistics
-- ✅ Modern, responsive UI
+- **Full CRUD Operations** - Create, Read, Update, and Delete products
+- **Server & Client Validation** - Robust validation on both frontend and backend
+- **Rwandan Francs (RWF)** - Currency formatting for Rwandan market
+- **Stock Units** - Support for multiple units (pcs, kgs, liters, grams, boxes, bags, bottles)
+- **Product Status** - Active/Archived status management
+- **Real-time Statistics** - Live inventory value and stock totals
+- **Modern UI** - Clean, responsive design
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 - **Frontend**: React + TypeScript + Vite
 - **Backend**: Node.js + Express
 - **Database**: MySQL
-- **Validation**: Joi
+- **Validation**: Joi (backend), TypeScript (frontend)
 
-## Prerequisites
+## 📋 Prerequisites
 
-- Node.js (v16 or higher) and npm
-- MySQL server (XAMPP or standalone MySQL)
-- Git (for version control)
+- Node.js (v16+)
+- MySQL (XAMPP or standalone)
+- npm or yarn
 
-## Setup Instructions
+## 🚀 Quick Start
 
 ### 1. Database Setup
 
-Create the database and tables by running this SQL in MySQL (phpMyAdmin or MySQL CLI):
+Run this SQL in MySQL (phpMyAdmin or CLI):
 
 ```sql
 CREATE DATABASE IF NOT EXISTS product_dashboard;
@@ -49,166 +48,96 @@ CREATE TABLE IF NOT EXISTS products (
 );
 ```
 
-**OR** use the SQL file:
+Or use the SQL file:
 ```bash
-# Using MySQL CLI (adjust credentials as needed)
 mysql -u root -p < backend/db/init.sql
 ```
 
-**If you already have the database without the `unit` field**, run:
-```bash
-mysql -u root -p < backend/db/migration_add_unit.sql
+### 2. Environment Setup
+
+**Backend** (`backend/.env`):
+```env
+PORT=4000
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=product_dashboard
 ```
 
-### 2. Backend Setup
+**Frontend** (`frontend/.env`):
+```env
+VITE_API_URL=http://localhost:4000
+```
 
-1. Navigate to backend directory:
-   ```bash
-   cd backend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create `.env` file:
-   ```bash
-   # Windows PowerShell
-   copy env.example .env
-   
-   # Or manually create .env with:
-   ```
-
-4. Edit `backend/.env` file with your MySQL credentials:
-   ```env
-   PORT=4000
-   DB_HOST=localhost
-   DB_PORT=3306
-   DB_USER=root
-   DB_PASSWORD=your_password
-   DB_NAME=product_dashboard
-   ```
-
-### 3. Frontend Setup
-
-1. Navigate to frontend directory:
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create `.env` file:
-   ```bash
-   # Windows PowerShell
-   copy env.example .env
-   
-   # Or manually create .env with:
-   ```
-
-4. Edit `frontend/.env` file:
-   ```env
-   VITE_API_URL=http://localhost:4000
-   ```
-   (Only change if your backend runs on a different port/URL)
-
-## Starting the Application
-
-### Option 1: Run Everything Together (Recommended)
-
-From the project root directory:
+### 3. Install & Run
 
 ```bash
-# Install root dependencies (concurrently)
+# Install all dependencies
 npm install
 
 # Start both backend and frontend
 npm run dev
 ```
 
-This will start:
-- **Backend API**: http://localhost:4000
+The app will automatically open at:
 - **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:4000
 
-### Option 2: Run Separately
-
-**Terminal 1 - Backend:**
-```bash
-cd backend
-npm run dev
-```
-
-**Terminal 2 - Frontend:**
-```bash
-cd frontend
-npm run dev
-```
-
-## API Endpoints
-
-- `GET /health` - Health check
-- `GET /products` - Get all products
-- `GET /products/:id` - Get a single product
-- `POST /products` - Create a product
-- `PUT /products/:id` - Update a product
-- `DELETE /products/:id` - Delete a product
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 Product_management_alx/
 ├── backend/
 │   ├── src/
-│   │   ├── db.js              # MySQL connection pool
+│   │   ├── db.js              # Database connection
 │   │   ├── server.js          # Express server
-│   │   ├── routes/
-│   │   │   └── products.js    # Product routes
-│   │   └── validation/
-│   │       └── productValidation.js  # Joi schemas
-│   ├── db/
-│   │   ├── init.sql           # Database schema
-│   │   └── migration_add_unit.sql  # Migration script
-│   ├── .env                   # Backend environment variables
-│   └── package.json
+│   │   ├── routes/            # API routes
+│   │   └── validation/        # Joi schemas
+│   └── db/                    # SQL scripts
 ├── frontend/
 │   ├── src/
-│   │   ├── App.tsx            # Main React component
-│   │   ├── api.ts             # API client functions
+│   │   ├── App.tsx            # Main component
+│   │   ├── api.ts             # API client
 │   │   ├── types.ts           # TypeScript types
 │   │   └── style.css          # Styles
-│   ├── .env                   # Frontend environment variables
-│   └── package.json
-├── package.json               # Root package.json (for concurrently)
-└── README.md
+│   └── vite.config.ts         # Vite configuration
+└── package.json               # Root scripts
 ```
 
-## Validation
+## 🔌 API Endpoints
 
-- **Backend**: Uses Joi for server-side validation
-  - Name: 2-100 characters (required)
-  - Description: Max 255 characters (optional)
-  - Price: Positive number with 2 decimals (required)
-  - Stock: Non-negative integer (optional, default: 0)
-  - Unit: One of: pcs, kgs, liters, grams, boxes, bags, bottles (default: pcs)
-  - Status: active or archived (default: active)
+- `GET /health` - Health check
+- `GET /products` - Get all products
+- `GET /products/:id` - Get single product
+- `POST /products` - Create product
+- `PUT /products/:id` - Update product
+- `DELETE /products/:id` - Delete product
 
-- **Frontend**: Additional client-side checks for better UX
+## 📝 Validation Rules
 
-## Notes
+**Backend (Joi)**:
+- Name: 2-100 characters (required)
+- Price: Positive number with 2 decimals (required)
+- Stock: Non-negative integer (optional)
+- Unit: pcs, kgs, liters, grams, boxes, bags, or bottles
+- Status: active or archived
 
-- CORS is enabled on the backend to allow frontend requests
-- The database uses timestamps for `created_at` and `updated_at`
-- Stock units help track inventory in different measurement types
-- Currency is formatted as Rwandan Francs (RWF)
+**Frontend**: Additional client-side validation for better UX
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
-1. **Database connection errors**: Check your `.env` file credentials and ensure MySQL is running
-2. **Port already in use**: Change the `PORT` in `backend/.env` or kill the process using that port
-3. **API not found**: Verify `VITE_API_URL` in `frontend/.env` matches your backend URL
-4. **Missing unit column**: Run the migration script: `mysql -u root -p < backend/db/migration_add_unit.sql`
+| Issue | Solution |
+|-------|----------|
+| Database connection error | Check MySQL credentials in `backend/.env` |
+| Port already in use | Change `PORT` in `backend/.env` |
+| Blank page / MIME error | Ensure you're accessing via dev server, not opening HTML directly |
+| API not found | Verify `VITE_API_URL` in `frontend/.env` |
 
+## 📄 License
+
+MIT
+
+## 👨‍💻 Author
+
+Albertin - Product Management Dashboard ALX Project
