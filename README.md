@@ -19,50 +19,26 @@ A modern full-stack product management system built  currency support, and flexi
 - **Database**: MongoDB (Mongoose)
 - **Validation**: Joi (backend), TypeScript (frontend)
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Node.js (v16+)
-- MySQL (XAMPP or standalone)
+- MongoDB (local installation or MongoDB Atlas)
 - npm or yarn
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Database Setup
 
-Run this SQL in MySQL (phpMyAdmin or CLI):
+Ensure you have a MongoDB database available (local MongoDB or MongoDB Atlas).
 
-```sql
-CREATE DATABASE IF NOT EXISTS product_dashboard;
-USE product_dashboard;
-
-CREATE TABLE IF NOT EXISTS products (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  description VARCHAR(255) DEFAULT '',
-  price DECIMAL(10, 2) NOT NULL,
-  stock INT NOT NULL DEFAULT 0,
-  unit VARCHAR(20) NOT NULL DEFAULT 'pcs',
-  status VARCHAR(20) NOT NULL DEFAULT 'active',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-```
-
-Or use the SQL file:
-```bash
-mysql -u root -p < backend/db/init.sql
-```
+The backend will connect using `MONGO_URI`.
 
 ### 2. Environment Setup
 
 **Backend** (`backend/.env`):
 ```env
 PORT=4000
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=""
-DB_NAME=product_dashboard
+MONGO_URI=mongodb://127.0.0.1:27017/product_dashboard
 ```
 
 **Frontend** (`frontend/.env`):
@@ -84,7 +60,7 @@ When it starts, check the terminal output and open the URL shown under **[WEB]**
 - **Frontend**: `http://localhost:5173/`
 - **Backend API**: `http://localhost:4000`
 
-## ▶️ Run Options
+## Run Options
 
 ### Option 1: Development mode (recommended)
 
@@ -122,7 +98,7 @@ Terminal 2:
 npm run dev --prefix frontend
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Product_management_alx/
@@ -132,7 +108,6 @@ Product_management_alx/
 │   │   ├── server.js          # Express server
 │   │   ├── routes/            # API routes
 │   │   └── validation/        # Joi schemas
-│   └── db/                    # SQL scripts
 ├── frontend/
 │   ├── src/
 │   │   ├── App.tsx            # Main component
@@ -143,7 +118,7 @@ Product_management_alx/
 └── package.json               # Root scripts
 ```
 
-## 🔌 API Endpoints
+## API Endpoints
 
 - `GET /health` - Health check
 - `GET /products` - Get all products
@@ -152,7 +127,7 @@ Product_management_alx/
 - `PUT /products/:id` - Update product
 - `DELETE /products/:id` - Delete product
 
-## 📝 Validation Rules
+## Validation Rules
 
 **Backend (Joi)**:
 - Name: 2-100 characters (required)
@@ -163,11 +138,11 @@ Product_management_alx/
 
 **Frontend**: Additional client-side validation for better UX
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
-| Database connection error | Check MySQL credentials in `backend/.env` |
+| Database connection error | Check `MONGO_URI` in `backend/.env` (local) or your deployment environment variables |
 | Port already in use | Change `PORT` in `backend/.env` |
 | Blank page / MIME error | Ensure you're accessing via Vite dev server URL, not XAMPP Apache URL |
 | API not found | Verify `VITE_API_URL` in `frontend/.env` |

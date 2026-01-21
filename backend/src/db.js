@@ -1,17 +1,19 @@
-const mysql = require('mysql2/promise');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  port: Number(process.env.DB_PORT) || 3306,
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'product_dashboard',
-  waitForConnections: true,
-  connectionLimit: 10,
-});
+const connectDB = async () => {
+  const mongoUri =
+    process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/product_dashboard';
 
-module.exports = pool;
+  try {
+    await mongoose.connect(mongoUri);
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  }
+};
+
+module.exports = { connectDB };
 
