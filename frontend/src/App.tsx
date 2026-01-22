@@ -38,7 +38,7 @@ function App() {
     () => ({
       count: products.length,
       stock: products.reduce((sum, item) => sum + (item.stock || 0), 0),
-      value: products.reduce((sum, item) => sum + item.price * item.stock, 0),
+      value: products.reduce((sum, item) => sum + item.price * (item.stock || 0), 0),
     }),
     [products]
   );

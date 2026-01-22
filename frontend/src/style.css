@@ -227,12 +227,18 @@ button.danger:hover {
   letter-spacing: 0.04em;
   color: #475569;
   border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 8px;
+  padding: 0 10px 8px;
 }
 
 .table-row {
-  padding: 10px 0;
+  padding: 10px 10px;
   border-bottom: 1px solid #e2e8f0;
+  border-radius: 12px;
+  transition: background-color 0.15s ease;
+}
+
+.table-row:hover {
+  background: #f8fafc;
 }
 
 .title {
@@ -281,6 +287,10 @@ button.danger:hover {
 @media (max-width: 960px) {
   .layout {
     grid-template-columns: 1fr;
+  }
+
+  .table-head {
+    display: none;
   }
 
   .table-head,
